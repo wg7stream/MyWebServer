@@ -1,0 +1,39 @@
+2020.11.30
+    std::chrono是C++11引入的日期时间处理库
+    包含3种时钟：system_clock，steady_clock，high_resolution_clock.
+    所谓时钟，是指从一个时点开始，按照某个刻度的一个计数。
+    精度（ratio）、时间段（duration）、时间点（timeout）、时钟(代表当前系统的时间)
+    std::chrono::duration：表示一段时间，比如两个小时，12.88秒，半个时辰，一炷香的时间等等
+    std::chrono::time_point“表示一个具体时间，如上个世纪80年代、今天下午3点、火车出发时间等，只要它能用计算机时钟表示。
+    chrono中有三种时钟：system_clock，steady_clock和high_resolution_clock。
+    每一个clock类中都有确定的time_point, duration, Rep, Period类型
+    std::chrono::high_resolution_clock 是标准库中提供的具有最小节拍周期(因此具有最高的精度的时钟)
+
+    timernode有3个重要的成员变量：
+        1. id
+        2. expires
+        3. callback
+
+    删除某个定时器时，将要删除的节点和堆尾节点的元素进行交换，然后再调整堆结构。
+
+    定时器类中的tick()函数
+
+    线程同步机制：
+        封装了信号量、互斥锁和条件变量
+        将锁的创建于销毁函数封装在类的构造与析构函数中，实现RAII机制
+        信号量：
+            1. 初始化（有参、无参）
+            2. 销毁
+            3. wait（减）
+            4. post（加
+        互斥锁：
+            1. 初始化
+            2. 销毁
+            3. 获取锁
+            4. 加锁
+            5. 解锁
+        信号量：   
+            1. 初始化
+            2. 销毁
+            3. wait和timewait
+            4. signal和broadcast
