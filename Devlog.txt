@@ -37,3 +37,50 @@
             2. 销毁
             3. wait和timewait
             4. signal和broadcast
+
+
+
+2020.12.1
+    线程池模块：
+        1. 使用list存出任务队列
+        2. work设置为静态函数，内部调用run
+        3. run函数从任务队列中取出任务，然后根据线程池的m_actor_model参数确定是哪种模式
+
+2020.12.2
+        /*
+        epoll的三个主要函数：
+            1. int epoll_create(int size) 创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大
+            2. int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event) epoll的事件注册函数
+               参数1：epoll_create的返回值  
+               参数2：表示动作，用3个宏来表示：EPOLL_CTL_ADD  EPOLL_CTL_MOD  EPLL_CTL_DEL
+               参数3：要监听的fd
+               参数4：告诉内核需要监听什么事  
+               struct epoll_event{
+                   __uint32_t events;
+                   epoll_data_t data;
+               }
+               events可以是以下几个宏的集合：
+                EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
+                EPOLLOUT：表示对应的文件描述符可以写；
+                EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；
+                EPOLLERR：表示对应的文件描述符发生错误；
+                EPOLLHUP：表示对应的文件描述符被挂断；
+                EPOLLET： 将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)来说的。
+                EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里
+            3. int epoll_wait(int epfd, struct spoll_event* events, int maxevents, int timeout)
+                参数events用来从内核得到事件的集合
+                maxevents告之内核这个events有多大
+                参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。
+                该函数返回需要处理的事件数目，如返回0表示已超时。
+
+            对端连接断开触发的 epoll 事件会包含 EPOLLIN | EPOLLRDHUP，即 0x2001。有了这个事件，
+            对端断开连接的异常就可以在底层进行处理了，不用再移交到上层
+    */
+
+    http_conn类中的2个init，先调用有参数的init(),将相应的fd添加到epollfd中。然后再调用无参的init()，初始化类中的一些变量
+
+    在proactor模式下，只处理逻辑任务，此时请求报文已经读取到了缓冲中
+
+    *m_url ++ = '\0';// 将该字符置为'\0',可以将它前面的字符串取出，因为字符串以'\0'结尾
+    完成从缓冲区解析每一行的函数：parse_line()       
+    完成解析请求行的函数：parse_request_line() 
