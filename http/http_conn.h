@@ -117,16 +117,16 @@ private:
     METHOD m_method;
 
     // 解析请求报文中的相关变量
-    char m_real_file[FILENAME_LEN];
+    char m_real_file[FILENAME_LEN];// 要请求的html文件的名字
     char *m_url;
     char *m_version;
     char *m_host;
     int m_content_length;
-    bool m_linger;
+    bool m_linger;// 标识是否为长连接
 
     char *m_file_address;// 要读取的文件在服务器上的地址
-    struct stat m_file_stat;
-    struct iovec m_iv[2];//?????????????????????????
+    struct stat m_file_stat;// 描述文件相关属性的结构体
+    struct iovec m_iv[2];
     int m_iv_count;//???????????????????????????????
     int cgi;
 
